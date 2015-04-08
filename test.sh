@@ -43,6 +43,6 @@ test_leaderboard(){
   call 'GET' 'localhost:4000/leaderboard.json'
 }
 
-# test_register
+test_register
 test_stage1
 test_leaderboard

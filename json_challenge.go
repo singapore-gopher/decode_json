@@ -1,9 +1,46 @@
 package main
 
-import ()
+import (
+	`encoding/json`
+	`io/ioutil`
+	`log`
+	`os`
+)
 
-func NewJSONStages() map[int]stage {
-	data := make(map[int]stage, 3)
+var (
+	jsonChallenge challenge
+)
+
+func init() {
+	jsonChallenge = challenge{
+		Teams: make(map[string]map[string]stageStats),
+	}
+}
+
+func setupChallenge() {
+	var stages map[string]stage
+
+	file, err := os.Open(saveFile)
+	if os.IsNotExist(err) { // no file there
+		stages = NewJSONStages()
+	} else {
+		data, err := ioutil.ReadAll(file)
+		if err != nil {
+			log.Fatalf(`could not read existing save; err=%v`, err)
+		}
+		if err := json.Unmarshal(data, &stages); err != nil {
+			log.Fatalf(`could not decode save; err=%v`, err)
+		}
+		file.Close()
+	}
+
+	jsonChallenge.Lock()
+	jsonChallenge.Stages = stages
+	jsonChallenge.Unlock()
+}
+
+func NewJSONStages() map[string]stage {
+	data := make(map[string]stage, 3)
 
 	data[Stage1] = stage{
 		Tests: []testCase{

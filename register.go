@@ -3,6 +3,7 @@ package main
 import (
 	`encoding/json`
 	`errors`
+	`fmt`
 	`io/ioutil`
 	`net/http`
 )
@@ -42,9 +43,9 @@ func register(resp http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	jsonChallenge.Teams[input.Name] = make(map[int]stageStats)
+	jsonChallenge.Teams[input.Name] = make(map[string]stageStats)
 	jsonChallenge.Unlock()
 
 	resp.WriteHeader(http.StatusCreated)
-	resp.Write([]byte(`{"ok":true,"name":"` + input.Name + `"}`))
+	resp.Write([]byte(fmt.Sprintf(`{"ok":true,"name":"%s"}`, input.Name)))
 }

@@ -4,8 +4,8 @@ JSON Decode challenge
 # how-to
 
 ## Register your team
-### POST /register.json
 
+### POST /register.json
 ```bash
 > POST /register.json HTTP/1.1
 > User-Agent: curl/7.35.0
@@ -24,8 +24,8 @@ JSON Decode challenge
 {"ok":true,"name":"marvin"}
 ```
 ## Get leaderboard
-### GET
 
+### GET /leaderboard.json
 ```bash
 > GET /leaderboard.json HTTP/1.1
 > User-Agent: curl/7.35.0
@@ -45,6 +45,7 @@ JSON Decode challenge
 
 ## Challenge 1
 
+### GET /stage1/data.json
 ```bash
 > GET /stage1/data.json HTTP/1.1
 > User-Agent: curl/7.35.0
@@ -60,6 +61,7 @@ JSON Decode challenge
 {"inputs":[{"first":5,"second":10},{"first":7,"second":234},{"first":9,"second":8},{"first":14,"second":84}]}
 ```
 
+### POST /stage1/submit.json
 ```bash
 > POST /stage1/submit.json HTTP/1.1
 > User-Agent: curl/7.35.0
@@ -68,6 +70,8 @@ JSON Decode challenge
 > Content-type: application/json
 > Content-Length: 78
 >
+
+{"team":"random","solutions":[{"sum":15},{"sum":241},{"sum":17},{"sum":9811}]}
 
 < HTTP/1.1 200 OK
 < Date: Wed, 08 Apr 2015 08:14:12 GMT

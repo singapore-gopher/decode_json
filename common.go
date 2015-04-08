@@ -2,20 +2,22 @@ package main
 
 import (
 	`errors`
+	`fmt`
 	`net/http`
+	`strings`
 	`sync`
 	`time`
 )
 
 // testCase stores the info of one test
 type testCase struct {
-	Input  string
-	Output string
+	Input  string `json:"input"`
+	Output string `json:"output"`
 }
 
 // stage stores the info of a challege
 type stage struct {
-	Tests []testCase
+	Tests []testCase `json:"tests"`
 }
 
 // challenge stores the whole 3-stage challenge
@@ -70,4 +72,21 @@ func updateTeam(name, stage string, passed int) {
 	stats.LatestAttempt = now
 	jsonChallenge.Teams[name][stage] = stats
 	jsonChallenge.Unlock()
+}
+
+func dataHandler(stage string) func(resp http.ResponseWriter, req *http.Request) {
+	jsonChallenge.RLock()
+	stages := jsonChallenge.Stages
+	jsonChallenge.RUnlock()
+
+	var data []string
+	for _, test := range stages[stage].Tests {
+		data = append(data, test.Input)
+	}
+	results := fmt.Sprintf(`{"inputs":[%s]}`, strings.Join(data, `,`))
+
+	return func(resp http.ResponseWriter, req *http.Request) {
+		resp.WriteHeader(http.StatusOK)
+		resp.Write([]byte(results))
+	}
 }

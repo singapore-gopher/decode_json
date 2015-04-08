@@ -1,10 +1,10 @@
 package main
 
 import (
-	`encoding/json`
-	`io/ioutil`
-	`log`
-	`os`
+//`encoding/json`
+//`io/ioutil`
+//`log`
+//`os`
 )
 
 var (
@@ -20,20 +20,21 @@ func init() {
 func setupChallenge() {
 	var stages map[string]stage
 
-	file, err := os.Open(saveFile)
-	if os.IsNotExist(err) { // no file there
-		stages = NewJSONStages()
-	} else {
-		data, err := ioutil.ReadAll(file)
-		if err != nil {
-			log.Fatalf(`could not read existing save; err=%v`, err)
-		}
-		if err := json.Unmarshal(data, &stages); err != nil {
-			log.Fatalf(`could not decode save; err=%v`, err)
-		}
-		file.Close()
-	}
+	// file, err := os.Open(saveFile)
+	// if os.IsNotExist(err) { // no file there
+	// 	stages = NewJSONStages()
+	// } else {
+	// 	data, err := ioutil.ReadAll(file)
+	// 	if err != nil {
+	// 		log.Fatalf(`could not read existing save; err=%v`, err)
+	// 	}
+	// 	if err := json.Unmarshal(data, &stages); err != nil {
+	// 		log.Fatalf(`could not decode save; err=%v`, err)
+	// 	}
+	// 	file.Close()
+	// }
 
+	stages = NewJSONStages()
 	jsonChallenge.Lock()
 	jsonChallenge.Stages = stages
 	jsonChallenge.Unlock()

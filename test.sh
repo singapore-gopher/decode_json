@@ -32,6 +32,7 @@ test_register(){
 #			{`{"first":14,"second":84}`, `{"sum":98}`},
 
 test_stage1(){
+  call 'GET' 'localhost:4000/stage1/data.json'
   call 'POST' 'localhost:4000/register.json' '{"name":"vorgon"}'
   call 'POST' 'localhost:4000/stage1/submit.json' '{"team":"vorgon","solutions":[{"sum":15},{"sum":241},{"sum":17},{"sum":9811}]}' # good (first 3 correct)
   call 'POST' 'localhost:4000/stage1/submit.json' '{"team":"vorgon","solutions":[{"sum":15},{"sum":241},{"sum":17}]}'

@@ -50,6 +50,7 @@ var (
 func NewError(resp http.ResponseWriter, status int, err error) {
 	resp.WriteHeader(status)
 	resp.Write([]byte(`{"error":"` + err.Error() + `"}`))
+	resp.Write([]byte{'\n'})
 }
 
 func updateTeam(name, stage string, passed int) {

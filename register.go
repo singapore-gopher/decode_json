@@ -48,4 +48,5 @@ func register(resp http.ResponseWriter, req *http.Request) {
 
 	resp.WriteHeader(http.StatusCreated)
 	resp.Write([]byte(fmt.Sprintf(`{"ok":true,"name":"%s"}`, input.Name)))
+	resp.Write([]byte{'\n'})
 }

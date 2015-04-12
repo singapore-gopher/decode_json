@@ -22,9 +22,7 @@ var (
 ```go
 func IsMagicValue(value string) bool
 ```
-IsMagicValue takes a Base64 encoded string and checks if it is an a magic packet
-value. It doesn't return errors, in case something fails (e.g the value is not a
-base64 []byte), the result is false.
+IsMagicValue takes a Base64 encoded string and checks if it is a magic packet's value. It doesn't return error, in case something fails (e.g the value is not a base64 []byte), the result will be false.
 
 #### func  Serve
 

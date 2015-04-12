@@ -63,8 +63,8 @@ func getRouter() *mux.Router {
 	stage2.HandleFunc(`/submit.json`, placeholder).Methods(`POST`)
 
 	stage3 := router.PathPrefix(`/stage3`).Subrouter()
-	stage3.HandleFunc(`/data.json`, placeholder).Methods(`GET`)
-	stage3.HandleFunc(`/submit.json`, placeholder).Methods(`POST`)
+	//stage3.HandleFunc(`/data.json`, placeholder).Methods(`GET`)
+	stage3.HandleFunc(`/submit.json`, stage3Handler).Methods(`POST`)
 
 	return router
 }

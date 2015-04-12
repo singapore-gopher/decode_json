@@ -86,7 +86,7 @@ func Serve(status chan int) {
 			select {
 			case <-magicTick.C:
 				data, err := newPacket(true)
-				fmt.Println(">>>", string(data))
+				//fmt.Println(">>>", string(data))
 				if err != nil {
 					log.Println(err)
 				}
@@ -94,7 +94,7 @@ func Serve(status chan int) {
 				r.fanout(data)
 			case <-normalTick.C:
 				data, err := newPacket(false)
-				fmt.Println(">>>", string(data))
+				//fmt.Println(">>>", string(data))
 				if err != nil {
 					log.Println(err)
 				}

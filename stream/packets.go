@@ -17,6 +17,8 @@ var (
 	MagicValue = "Preciousss."
 )
 
+// Packet is the structure of a message in the stream. TimeStamp is
+// a Unix timestamp, Value is a Base64 encoded []byte.
 type Packet struct {
 	TimeStamp int64  `json:"timestamp"`
 	Value     string `json:"value"`
@@ -105,8 +107,9 @@ func decrypt(cipherData []byte) (string, error) {
 	return string(data), nil
 }
 
-// IsMagicValue takes a string and checks if it is an encrypted value of a magic packet.
-// Use this function to decide whether the received value is magic or not.
+// IsMagicValue takes a Base64 encoded string and checks if it is an
+// a magic packet value. It doesn't return errors, in case something
+// fails (e.g the value is not a base64 []byte), the result is false.
 func IsMagicValue(value string) bool {
 	data, err := base64.StdEncoding.DecodeString(value)
 	if err != nil {

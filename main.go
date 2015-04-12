@@ -14,6 +14,7 @@ func main() {
 
 	go saveChallenge()
 	go serveStream()
+
 	http.Handle(`/`, getRouter())
 	err := http.ListenAndServe(`:4000`, nil)
 	if err != nil {
@@ -25,6 +26,7 @@ func serveStream() {
 	stream.Port = "4001"
 	status := make(chan int)
 	go stream.Serve(status)
+
 	select {
 	case s := <-status:
 		if s != 0 {
@@ -39,7 +41,7 @@ func serveStream() {
 		select {
 		case s := <-status:
 			if s == 2 {
-				// this is not implemented, so (for now) it waits forever.
+				// this is not implemented, instead, it waits forever.
 				return
 			}
 		}

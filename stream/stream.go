@@ -1,7 +1,6 @@
 package stream
 
 import (
-	"fmt"
 	"io"
 	"log"
 	"net"
@@ -14,26 +13,28 @@ var (
 )
 
 // for this json-challenge this would do the job
-// for more flexible solution, look at channels
+// for a more flexible solution, look at channels
 type router struct {
 	sync.RWMutex
 	clients map[int64]io.ReadWriteCloser
 }
 
-// add new client
+// add new client to router
 func (self *router) add(c io.ReadWriteCloser) {
 	id := time.Now().UTC().UnixNano()
-	fmt.Println(id)
+	log.Println("new client:", id)
 	self.Lock()
 	self.clients[id] = c
+	log.Println("clients:", len(self.clients))
 	self.Unlock()
 }
 
 // delete a client (called on write errors)
 func (self *router) remove(id int64) {
 	self.Lock()
+	log.Println("client disconnected:", id)
 	delete(self.clients, id)
-	log.Println(len(self.clients))
+	log.Println("clients:", len(self.clients))
 	self.Unlock()
 }
 
@@ -51,7 +52,7 @@ func (self *router) fanout(data []byte) {
 			_, err := c.Write(data)
 			if err != nil {
 				self.remove(clientId)
-				log.Println(clientId, "disconnected:", err.Error())
+				log.Println(clientId, err.Error())
 				c.Close()
 				return
 			}
@@ -61,10 +62,6 @@ func (self *router) fanout(data []byte) {
 
 	return
 
-}
-
-type streamHandler struct {
-	r *router
 }
 
 // Serve creates a router instance, spawns the goroutine for sending out the packets
@@ -121,7 +118,7 @@ func Serve(status chan int) {
 			log.Fatal(err)
 		}
 
-		log.Println(conn.RemoteAddr(), "connected")
+		log.Println("connection accepted from IP:", conn.RemoteAddr())
 
 		r.add(conn)
 	}

@@ -3,8 +3,7 @@
     import "github.com/singapore-gophers/decode_json/stream"
 
 
-## Usage
-
+### Variables
 ```go
 var (
 	Secret     = "A very secret secret."

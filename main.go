@@ -3,6 +3,7 @@ package main
 import (
 	`flag`
 	`github.com/gorilla/mux`
+	"github.com/singapore-gophers/decode_json/stream"
 	`log`
 	`net/http`
 )
@@ -12,10 +13,38 @@ func main() {
 	setupChallenge()
 
 	go saveChallenge()
+	go serveStream()
+
 	http.Handle(`/`, getRouter())
 	err := http.ListenAndServe(`:4000`, nil)
 	if err != nil {
 		log.Fatalf(`Could not start web server; err=%v`, err)
+	}
+}
+
+func serveStream() {
+	stream.Port = "4001"
+	status := make(chan int)
+	go stream.Serve(status)
+
+	select {
+	case s := <-status:
+		if s != 0 {
+			log.Println("Failed to start stream server")
+			return
+		}
+	}
+
+	log.Printf("stream server listening on port %s", stream.Port)
+
+	for {
+		select {
+		case s := <-status:
+			if s == 2 {
+				// this is not implemented, instead, it waits forever.
+				return
+			}
+		}
 	}
 }
 

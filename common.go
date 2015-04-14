@@ -31,6 +31,7 @@ type stageStats struct {
 	Attempts      int       `json:"attempts"`
 	Passed        int       `json:"passed"`
 	FirstAttempt  time.Time `json:"first_try"`
+	FirstPassed   time.Time `json:"first_pass"`
 	LatestAttempt time.Time `json:"latest_try"`
 }
 
@@ -69,6 +70,9 @@ func updateTeam(name, stage string, passed int) {
 	stats.Attempts++
 	if passed > stats.Passed {
 		stats.Passed = passed
+		if stats.FirstPassed.IsZero() {
+			stats.FirstPassed = now
+		}
 	}
 	stats.LatestAttempt = now
 	jsonChallenge.Teams[name][stage] = stats

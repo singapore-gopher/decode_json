@@ -33,7 +33,7 @@ JSON Decode challenge
 
 Simply add the first and the second values in the data you get from the server. Return it in the specified format, along with your team's name.
 
-### GET http://forgot_to_update_hostname/stage1/data.json
+### GET http://10.0.2.235:4000/stage1/data.json
 ```bash
 > GET /stage1/data.json HTTP/1.1
 > User-Agent: curl/7.35.0

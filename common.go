@@ -31,6 +31,7 @@ type stageStats struct {
 	Attempts      int       `json:"attempts"`
 	Passed        int       `json:"passed"`
 	FirstAttempt  time.Time `json:"first_try"`
+	FirstPassed   time.Time `json:"first_pass"`
 	LatestAttempt time.Time `json:"latest_try"`
 }
 
@@ -50,6 +51,7 @@ var (
 func NewError(resp http.ResponseWriter, status int, err error) {
 	resp.WriteHeader(status)
 	resp.Write([]byte(`{"error":"` + err.Error() + `"}`))
+	resp.Write([]byte{'\n'})
 }
 
 func updateTeam(name, stage string, passed int) {
@@ -68,6 +70,9 @@ func updateTeam(name, stage string, passed int) {
 	stats.Attempts++
 	if passed > stats.Passed {
 		stats.Passed = passed
+		if stats.FirstPassed.IsZero() {
+			stats.FirstPassed = now
+		}
 	}
 	stats.LatestAttempt = now
 	jsonChallenge.Teams[name][stage] = stats

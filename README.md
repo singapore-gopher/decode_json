@@ -1,6 +1,15 @@
 # decode_json
 JSON Decode challenge
 
+```
+Credits:
+
+Mostly to Zoltan Giber for speaking :)
+You can contact Zoltan at
+Skype: giberz
+g+  / email / Facebook : zgiber@gmail.com
+```
+
 # how-to
 
 ## Registration
